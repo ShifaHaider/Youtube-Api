@@ -68,6 +68,7 @@ function addToPlaylist(id, startPos, endPos) {
         }
     });
     request.execute(function(response) {
+        console.log(response);
         $('#status').html('<pre>' + JSON.stringify(response.result) + '</pre>');
     });
 }

@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html>
 <body>
-<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
 <div id="player"></div>
-<video width="320" height="240" controls>
-    <source src="https://www.youtube.com/watch?v=kZsxC1W6muQp4">
-    <source src="https://www.youtube.com/watch?v=kZsxC1W6muQp4" type="video/ogg">
-    Your browser does not support the video tag.
-</video>
+<div id="iframe">
+<iframe width="420" height="315"
+        src="https://www.youtube.com/embed/kZsxC1W6muQ?playlist=kZsxC1W6muQ&loop=1">
+</iframe>
+</div>
 <script>
-    // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
-
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);

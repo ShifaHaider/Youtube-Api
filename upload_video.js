@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-var signinCallback = function (result){
-    if(result.access_token) {
+var signinCallback = function (result) {
+    //console.log(result);
+    if (result.access_token) {
         var uploadVideo = new UploadVideo();
         uploadVideo.ready(result.access_token);
     }
@@ -29,7 +30,7 @@ var STATUS_POLLING_INTERVAL_MILLIS = 60 * 1000; // One minute.
  *
  * @constructor
  */
-var UploadVideo = function() {
+var UploadVideo = function () {
     /**
      * The array of tags for the new YouTube video.
      *
@@ -62,7 +63,8 @@ var UploadVideo = function() {
 };
 
 
-UploadVideo.prototype.ready = function(accessToken) {
+UploadVideo.prototype.ready = function (accessToken) {
+    console.log('dfsdf');
     this.accessToken = accessToken;
     this.gapi = gapi;
     this.authenticated = true;
@@ -72,7 +74,7 @@ UploadVideo.prototype.ready = function(accessToken) {
             part: 'snippet',
             mine: true
         },
-        callback: function(response) {
+        callback: function (response) {
             if (response.error) {
                 console.log(response.error.message);
             } else {
@@ -93,7 +95,7 @@ UploadVideo.prototype.ready = function(accessToken) {
  * @method uploadFile
  * @param {object} file File object corresponding to the video to upload.
  */
-UploadVideo.prototype.uploadFile = function(file) {
+UploadVideo.prototype.uploadFile = function (file) {
     var metadata = {
         snippet: {
             title: $('#title').val(),
@@ -113,7 +115,7 @@ UploadVideo.prototype.uploadFile = function(file) {
         params: {
             part: Object.keys(metadata).join(',')
         },
-        onError: function(data) {
+        onError: function (data) {
             var message = data;
             // Assuming the error is raised by the YouTube API, data will be
             // a JSON string with error.message set. That may not be the
@@ -125,7 +127,7 @@ UploadVideo.prototype.uploadFile = function(file) {
                 alert(message);
             }
         }.bind(this),
-        onProgress: function(data) {
+        onProgress: function (data) {
             var currentTime = Date.now();
             var bytesUploaded = data.loaded;
             var totalBytes = data.total;
@@ -145,7 +147,7 @@ UploadVideo.prototype.uploadFile = function(file) {
 
             $('.during-upload').show();
         }.bind(this),
-        onComplete: function(data) {
+        onComplete: function (data) {
             var uploadResponse = JSON.parse(data);
             this.videoId = uploadResponse.id;
             $('#video-id').text(this.videoId);
@@ -158,19 +160,19 @@ UploadVideo.prototype.uploadFile = function(file) {
     uploader.upload();
 };
 
-UploadVideo.prototype.handleUploadClicked = function() {
+UploadVideo.prototype.handleUploadClicked = function () {
     $('#button').attr('disabled', true);
     this.uploadFile($('#file').get(0).files[0]);
 };
 
-UploadVideo.prototype.pollForVideoStatus = function() {
+UploadVideo.prototype.pollForVideoStatus = function () {
     this.gapi.client.request({
         path: '/youtube/v3/videos',
         params: {
             part: 'status,player',
             id: this.videoId
         },
-        callback: function(response) {
+        callback: function (response) {
             if (response.error) {
                 // The status polling failed.
                 console.log(response.error.message);

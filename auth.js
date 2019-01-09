@@ -11,18 +11,17 @@ googleApiClientReady = function() {
 function checkAuth() {
     gapi.auth.authorize({
         client_id: OAUTH2_CLIENT_ID,
-        scope: OAUTH2_SCOPES,
+        scope: OAUTH2_SCOPES
         //immediate: true
     }, handleAuthResult);
 }
 function handleAuthResult(authResult) {
-    console.log(authResult);
     if (authResult && !authResult.error) {
-        $('.pre-auth').hide();
-        $('.post-auth').show();
+        document.getElementsByClassName('post-auth')[0].style.display = "none";
+        document.getElementsByClassName('pre-auth')[0].style.display = "";
         loadAPIClientInterfaces();
     } else {
-        $('#login-link').click(function() {
+        document.getElementById('login-link').setAttribute('onclick' ,  function() {
             gapi.auth.authorize({
                 client_id: OAUTH2_CLIENT_ID,
                 scope: OAUTH2_SCOPES,
@@ -35,9 +34,9 @@ function handleAPILoaded() {
     enableForm();
 }
 
-// Enable the form for creating a playlist.
 function enableForm() {
-    $('#playlist-button').attr('disabled', false);
+    document.getElementById('playlist-button').setAttribute('disabled', false);
+    //$('#playlist-button').attr('disabled', false);
 }
 function loadAPIClientInterfaces() {
     gapi.client.load('youtube', 'v3', function() {
